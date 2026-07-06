@@ -1,38 +1,67 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
+  background: #f4f6fb;
+  font-family: Arial, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.appContainer {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background: linear-gradient(135deg, #d8ddf3, #351851);
+  padding: 40px;
+}
+
+.loginBox {
+  max-width: 400px;
+  margin: 80px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background: #667eea;
   color: white;
+  border: none;
+  padding: 10px 16px;
+  margin: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+button:hover { background: #5563d6; }
+
+.card {
+  background: white;
+  padding: 15px;
+  margin: 12px 0;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-.App-link {
-  color: #61dafb;
+.section {
+  background: rgba(255,255,255,0.2);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: inline-block;
+  margin-top: 5px;
 }
+.pending  { background: #facc15; }
+.accepted { background: #22c55e; color: white; }
+.rejected { background: #ef4444; color: white; }
