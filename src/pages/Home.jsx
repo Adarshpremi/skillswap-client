@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import RatingModal from '../components/RatingModal';
-// import RatingStars from '../components/RatingStars';
 import API from '../api/axios';
 
 const CATEGORIES = ['All', 'Tech', 'Music', 'Art', 'Language', 'Cooking', 'Fitness', 'Business', 'Other'];
@@ -16,22 +15,10 @@ export default function Home() {
   const [need,      setNeed]      = useState('');
   const [category,  setCategory]  = useState('Other');
   const [editId,    setEditId]    = useState(null);
-
-  // Advanced Search
   const [search,    setSearch]    = useState('');
   const [filterCat, setFilterCat] = useState('All');
   const [sort,      setSort]      = useState('new');
-
-  // Rating Modal
   const [ratingReq, setRatingReq] = useState(null);
-
-  const loadSkills = () => {
-    const params = new URLSearchParams();
-    if (search)                    params.append('search',   search);
-    if (filterCat !== 'All')       params.append('category', filterCat);
-    if (sort)                      params.append('sort',     sort);
-    API.get(`/skills?${params}`).then(res => setSkills(res.data));
-  };
 
   const loadRequests = () => {
     API.get('/requests/mine').then(res =>
@@ -39,8 +26,19 @@ export default function Home() {
     );
   };
 
-  useEffect(() => { loadSkills();   }, [search, filterCat, sort]);
-  useEffect(() => { loadRequests(); }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (search)              params.append('search',   search);
+    if (filterCat !== 'All') params.append('category', filterCat);
+    if (sort)                params.append('sort',     sort);
+    API.get(`/skills?${params}`).then(res => setSkills(res.data));
+  }, [search, filterCat, sort]);
+
+  useEffect(() => {
+    loadRequests();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const saveSkill = async () => {
     if (!offer || !need) return alert('Please fill all fields');
@@ -78,7 +76,7 @@ export default function Home() {
         skill: skill._id
       });
       setUser(prev => ({ ...prev, credits: data.credits }));
-      alert('Request sent sucessfully! ✅');
+      alert('Request sent successfully! ✅');
       loadRequests();
     } catch (err) {
       alert(err.response?.data?.message || 'Error');
@@ -97,10 +95,10 @@ export default function Home() {
     }
   };
 
-  const mySkills    = skills.filter(s => s.user?._id === user?.id);
-  const otherSkills = skills.filter(s => s.user?._id !== user?.id);
-  const sentReqs    = requests.filter(r => r.from?._id === user?.id || r.from === user?.id);
-  const receivedReqs= requests.filter(r => r.to?._id   === user?.id || r.to   === user?.id);
+  const mySkills     = skills.filter(s => s.user?._id === user?.id);
+  const otherSkills  = skills.filter(s => s.user?._id !== user?.id);
+  const sentReqs     = requests.filter(r => r.from?._id === user?.id || r.from === user?.id);
+  const receivedReqs = requests.filter(r => r.to?._id   === user?.id || r.to   === user?.id);
 
   return (
     <div className="appContainer">
@@ -139,19 +137,14 @@ export default function Home() {
       </div>
 
       {/* Advanced Search */}
-      <div style={{
-        background: 'rgba(255,255,255,0.15)',
-        padding: '16px', borderRadius: '12px', marginBottom: '20px'
-      }}>
+      <div style={{ background: 'rgba(255,255,255,0.15)', padding: '16px', borderRadius: '12px', marginBottom: '20px' }}>
         <input
-          placeholder="🔍 Search skills, users..."
+          placeholder="Search skills, users..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{ marginBottom: '10px' }}
         />
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-
-          {/* Category Filter */}
           <select
             value={filterCat}
             onChange={e => setFilterCat(e.target.value)}
@@ -161,26 +154,22 @@ export default function Home() {
               <option key={c} value={c}>📁 {c}</option>
             ))}
           </select>
-
-          {/* Sort */}
           <select
             value={sort}
             onChange={e => setSort(e.target.value)}
             style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ccc', flex: 1 }}
           >
-            <option value="new">🕐 Newest First</option>
-            <option value="old">🕐 Oldest First</option>
-            <option value="az">🔤 A → Z</option>
-            <option value="za">🔤 Z → A</option>
+            <option value="new">Newest First</option>
+            <option value="old">Oldest First</option>
+            <option value="az">A to Z</option>
+            <option value="za">Z to A</option>
           </select>
         </div>
       </div>
 
       {/* Other Users */}
       <h2>Users ({otherSkills.length})</h2>
-      {otherSkills.length === 0 && (
-        <p style={{ color: 'white' }}>No skills found. mili.</p>
-      )}
+      {otherSkills.length === 0 && <p style={{ color: 'white' }}>No skills found.</p>}
       {otherSkills.map(s => (
         <div key={s._id} className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -189,11 +178,7 @@ export default function Home() {
                 <b style={{ color: '#667eea', cursor: 'pointer' }}>{s.name}</b>
               </Link>
               {s.category && (
-                <span style={{
-                  background: '#fff0d4', color: '#b86f00',
-                  fontSize: '11px', padding: '2px 8px',
-                  borderRadius: '20px', marginLeft: '8px'
-                }}>
+                <span style={{ background: '#fff0d4', color: '#b86f00', fontSize: '11px', padding: '2px 8px', borderRadius: '20px', marginLeft: '8px' }}>
                   {s.category}
                 </span>
               )}
@@ -237,27 +222,20 @@ export default function Home() {
           <p>From: <b>{r.from?.name}</b></p>
           <p>Skill: {r.skill?.offer}</p>
           <span className={`status ${r.status.toLowerCase()}`}>{r.status}</span>
-
           {r.status === 'Pending' && (
             <div style={{ marginTop: '8px' }}>
               <button onClick={() => updateStatus(r._id, 'Accepted')}>Accept</button>
               <button onClick={() => updateStatus(r._id, 'Rejected')}>Reject</button>
             </div>
           )}
-
-          {/* Rating button — sirf accepted requests pe */}
           {r.status === 'Accepted' && (
-            <button
-              onClick={() => setRatingReq(r)}
-              style={{ background: '#f59e0b', marginTop: '8px' }}
-            >
+            <button onClick={() => setRatingReq(r)} style={{ background: '#f59e0b', marginTop: '8px' }}>
               ⭐ Rate Now
             </button>
           )}
         </div>
       ))}
 
-      {/* Rating Modal */}
       {ratingReq && (
         <RatingModal
           request={ratingReq}
