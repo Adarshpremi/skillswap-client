@@ -28,7 +28,7 @@ export default function ChatWindow() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [userId]);
+  }, [userId,  user.id]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });

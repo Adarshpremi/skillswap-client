@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import RatingModal from '../components/RatingModal';
-import RatingStars from '../components/RatingStars';
+// import RatingStars from '../components/RatingStars';
 import API from '../api/axios';
 
 const CATEGORIES = ['All', 'Tech', 'Music', 'Art', 'Language', 'Cooking', 'Fitness', 'Business', 'Other'];
